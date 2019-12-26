@@ -21,11 +21,11 @@ if __name__ == '__main__':
     x = dataArr[:,0:9]
     y = dataArr[:,9]    # target
     
-    # 80% training and 20% test
+    # 70% training and 30% test
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=1)
 
     # Create Decision Tree classifer object
-    clf = DecisionTreeClassifier(criterion="entropy", max_depth=4)
+    clf = DecisionTreeClassifier(criterion="entropy", max_depth=5)
     clf = clf.fit(x_train, y_train)
     y_pred = clf.predict(x_test)
     print(confusion_matrix(y_test, y_pred))
@@ -40,5 +40,7 @@ if __name__ == '__main__':
     graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
     # graph.write_png('contra_tree.png')
     # Image(graph.create_png())
+    export_graphviz(clf, out_file = 'contra_tree.dot', feature_names=name[0:9],
+                        filled = True, rounded = True, special_characters = True)
     check_call(['dot', '-Tpng', dirpath + "/contra_tree.dot", '-o', 'contra_tree.png'])
     Image(filename = dirpath + '/contra_tree.png')
